@@ -144,4 +144,7 @@ public class Shape {
         System.out.println();
     }
 
+    public int[][] getCoord() {
+        return coord;
+    }
 }
