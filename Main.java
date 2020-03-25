@@ -25,20 +25,19 @@ public class Main {
                 {{4,0},{5,0},{6,0},{7,0}}
         };
 
-        int [][] coppyShape=new int[4][2];
+        int [][] copyShape=new int[4][2];
         Random rnd=new Random();
         int randomNumber=rnd.nextInt(7);
-        copy(coppyShape,shape1[randomNumber]);
-        Shape shape=new Shape(coppyShape,8,12,randomValues());
+        copy(copyShape,shape1[randomNumber]);
+        Shape shape=new Shape(copyShape,8,12,randomValues());
         int [][] rew=shape.review();
         do{
 
-            int [][] coppyShape2=new int[4][2];
+            int [][] copyShape2=new int[4][2];
             int randomNumber2=rnd.nextInt(7);
-            copy(coppyShape2,shape1[randomNumber2]);
-            Shape shapeNext=new Shape(coppyShape2,8,12,randomValues());
-            boolean cnt=true;
-            while(cnt) {
+            copy(copyShape2,shape1[randomNumber2]);
+            Shape shapeNext=new Shape(copyShape2,8,12,randomValues());
+            while(true) {
                 boolean check=true;
                 if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)){
                     //shape.moveDown();
@@ -62,7 +61,7 @@ public class Main {
                         drawNextShape(shapeNext);
                         StdDraw.show();
                     }
-                    else if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE)){
+                    else if (StdDraw.isKeyPressed(KeyEvent.VK_UP)){
                         shape.rotate(board);
                         DrawBoard(board);
                         DrawShape(shape);
@@ -74,7 +73,6 @@ public class Main {
                 }
 
                 if (shape.move(board)) {
-                    cnt = false;
                     break;
                 }
                 drawLines();
@@ -86,13 +84,13 @@ public class Main {
 
             }
 
-            System.out.println("ANA HAL score:" + score);
+            System.out.println("First Score:" + score);
             print(board);
             System.out.println();
             System.out.println("-------------------------------------");
             System.out.println();
             score+=Duplicate(board);
-            System.out.println("Duplicate sonras score :" + score);
+            System.out.println("After Duplicate Score :" + score);
             print(board);
             System.out.println();
 
@@ -190,12 +188,12 @@ public class Main {
     }
     public static void drawLines() {
 
-        StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-        // StdDraw.filledRectangle(0,0,8,12);
+//        StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+//        StdDraw.filledRectangle(0,0,8,12);
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 12; j++) {
-                StdDraw.setPenColor(StdDraw.GRAY);
+                StdDraw.setPenColor(StdDraw.WHITE);             // ARA ÇİZGİ RENGİ
                 StdDraw.setPenRadius(0.004);
                 StdDraw.square(i + 1, j + 1, 1);
             }
@@ -203,13 +201,13 @@ public class Main {
 
         for (int i = 8; i < 10; i++) {
             for (int j = 0; j < 12; j++) {
-                StdDraw.setPenColor(StdDraw.GRAY);
+                StdDraw.setPenColor(0,80,0);
                 StdDraw.filledSquare(i + 1, j + 1, 1);
             }
         }
 
         StdDraw.setPenRadius(0.008);
-        StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
+        StdDraw.setPenColor(93,67,44);
         StdDraw.line(0,0,0,12);
         StdDraw.line(0,0,10,0);
         StdDraw.line(10,0,10,12);
@@ -224,25 +222,23 @@ public class Main {
         // StdDraw.show();
     }
     static void DrawBoard(int[][] board){
+
+        drawLines();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if(board[i][j]!=0){
                     //StdDraw.setPenColor(StdDraw.CYAN);
                     setColor(board[i][j]);
-                    StdDraw.filledSquare(j + 0.98, i + 0.98, 0.98);
+                    StdDraw.filledSquare(j + 0.48, i + 0.48, 0.48);
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(j + 0.48, i + 0.48, Integer.toString(board[i][j]));
                 }
                 else{
-                    StdDraw.setPenColor(StdDraw.WHITE);
-                    StdDraw.filledSquare(j + 0.98, i + 0.98, 0.98);
+                    StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
+                    StdDraw.filledSquare(j + 0.48, i + 0.48, 0.48);
                 }
             }
-
         }
-        drawLines();
-
-
     }
     static void DrawShape(Shape shape){
         int [][] arr = shape.getCoord();
@@ -264,17 +260,17 @@ public class Main {
             for (int j = 0; j < arr[i].length; j++) {
                 if(arr[i][j]!=0) {
                     if(arr[1][0]==0&&arr[1][1]==0&&arr[1][2]==0&&arr[1][3]==0) {
-                        StdDraw.setPenColor(StdDraw.PINK);
-                        StdDraw.filledSquare(8.4+j/2.35, i/2.35+ 10.5, 0.2);
+                        setColor(arr[i][j]);
+                        StdDraw.filledSquare(8.35+j/2.35, i/2.35+ 10.5, 0.2);
                         StdDraw.setPenColor(StdDraw.BLACK);
-                        StdDraw.text(j/2.35 + 8.4, i/2.35 + 10.5, Integer.toString(arr[i][j]));
+                        StdDraw.text(j/2.35 + 8.35, i/2.35 + 10.5, Integer.toString(arr[i][j]));
                     }else if(arr[0][2]==0&&arr[0][3]==0&&arr[1][2]==0&&arr[1][3]==0) {
-                        StdDraw.setPenColor(StdDraw.PINK);
+                        setColor(arr[i][j]);
                         StdDraw.filledSquare(8.8+j/2.35, i/2.35+ 10.5, 0.2);
                         StdDraw.setPenColor(StdDraw.BLACK);
                         StdDraw.text(j/2.35 + 8.8, i/2.35 + 10.5, Integer.toString(arr[i][j]));
                     }else {
-                        StdDraw.setPenColor(StdDraw.PINK);
+                        setColor(arr[i][j]);
                         StdDraw.filledSquare(8.5+j/2.35, i/2.35+ 10.5, 0.2);
                         StdDraw.setPenColor(StdDraw.BLACK);
                         StdDraw.text(j/2.35 + 8.5, i/2.35 + 10.5, Integer.toString(arr[i][j]));
