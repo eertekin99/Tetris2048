@@ -136,6 +136,25 @@ public class Shape {
         return min;
 
     }
+    int maxY(){
+        int max= 0;
+        for (int i = 0; i < coord.length; i++) {
+            if(coord[i][1]>max){
+                max=coord[i][1];
+            }
+        }
+        return max;
+
+    }
+    int maxX(){
+        int max= 0;
+        for (int i = 0; i < coord.length; i++) {
+            if(coord[i][0]>max){
+                max=coord[i][0];
+            }
+        }
+        return max;
+    }
     int minX(){
         int min=20;
         for (int i = 0; i < coord.length; i++) {
@@ -144,6 +163,32 @@ public class Shape {
             }
         }
         return min;
+    }
+    boolean rotate(int [][] board){
+        //double mid =(double)(minX()+minY())/2.0;
+
+        int midX=coord[1][0];
+        int midY=coord[1][1];
+        System.out.println("mid x = "+midX);
+        System.out.println("mid y ="+midY);
+        int [][] temp = new int[4][2];
+        System.out.println("temps");
+        for (int i = 0; i < 4; i++) {
+
+            temp[i][1] = -(coord[i][0] - midX) + midY;
+            temp[i][0] = (coord[i][1] - midY) + midX;
+            if(temp[i][0]<0 || temp[i][0]>= boardX || temp[i][1]>=boardY){
+                return false;
+            }
+            if (temp[i][1]<0)
+                continue;
+            if(board[temp[i][1]][temp[i][0]]!=0 )
+                return false;
+
+
+        }
+        coord=temp;
+        return true;
     }
     int [][] review(){
         int [][] arr = new int [4][2];
@@ -176,8 +221,13 @@ public class Shape {
     public int[][] getCoord() {
         return coord;
     }
+
+
+    /*
     void rotateMatrix(int [][] arr) {
-        int N=4;
+       int N=4;
+        int val=minX();
+        int val2=minY();
         int mat[][]= new int [4][4];
         mat=arr;
         System.out.println("Review array");
@@ -192,7 +242,7 @@ public class Shape {
             for (int j = 0; j < arr[i].length ; j++) {
                 mat[i][j]=arr[i][j];
             }
-        }*/
+        }
         // Consider all squares one by one
         for (int x = 0; x < N / 2; x++)
         {
@@ -224,8 +274,7 @@ public class Shape {
             System.out.println();
         }
         System.out.println("-------");
-        int val=minX();
-        int val2=minY();
+
         int counter=0;
         for (int i = 0; i < mat.length; i++) {
             for (int j = 0; j < mat[i].length; j++) {
@@ -250,10 +299,10 @@ public class Shape {
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
                 if(arr[i][j]!=0){
-                    if(j<x)
-                        x=j;
-                    if(i<y)
-                        y=i;
+                  if(j<x)
+                  x=j;
+                  if(i<y)
+                  y=i;
 
                 }
             }
@@ -268,6 +317,6 @@ public class Shape {
             }
         }
 
-    }
+    */
 
 }
