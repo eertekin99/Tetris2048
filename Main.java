@@ -201,13 +201,14 @@ public class Main {
 
         for (int i = 8; i < 10; i++) {
             for (int j = 0; j < 12; j++) {
-                StdDraw.setPenColor(0,80,0);
+                StdDraw.setPenColor(30,80,55);
                 StdDraw.filledSquare(i + 1, j + 1, 1);
             }
         }
 
         StdDraw.setPenRadius(0.008);
-        StdDraw.setPenColor(93,67,44);
+//        StdDraw.setPenColor(93,67,44); //kahve
+        StdDraw.setPenColor(20,40,20);
         StdDraw.line(0,0,0,12);
         StdDraw.line(0,0,10,0);
         StdDraw.line(10,0,10,12);
@@ -234,7 +235,7 @@ public class Main {
                     StdDraw.text(j + 0.48, i + 0.48, Integer.toString(board[i][j]));
                 }
                 else{
-                    StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
+                    StdDraw.setPenColor(95,158,60);
                     StdDraw.filledSquare(j + 0.48, i + 0.48, 0.48);
                 }
             }
