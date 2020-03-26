@@ -119,12 +119,19 @@ public class Main {
                 old[i][j]=current[i][j];
     }
 
-    static void shiftDown(int [][] board){
+    static int shiftDown(int [][] board){
+        int total = 0;
+
         for (int i = 0; i < board.length-1; i++) {
+            boolean x =false;
             for (int j = 0; j < board[i].length; j++) {
                 if(board[i][j]!=0&&board[i+1][j]==0){
-                    int x = i;
-                    while(board[x+1][j]==0){
+                   // int x = i;
+                    int temp= board[i][j];
+                    board[i][j]=0;
+                    board[i+1][j]=temp;
+                    x=true;
+                    /*while(board[x+1][j]==0){
                         x++;
                         if(x>=board.length-1)
                             break;
@@ -132,15 +139,28 @@ public class Main {
                     int a = board[i][j];
                     board[i][j]=0;
                     board[x][j]=a;
-                    i=0;
+                    i=0;*/
+                }
+                else if(board[i][j]!=0&&board[i][j]==board[i+1][j]){
+                    board[i+1][j]+=board[i][j];
+                    total+=board[i-1][j];
+                    board[i][j]=0;
+                    x=true;
                 }
             }
+            if (x){
+                i=0;
+                DrawBoard(board);
+                StdDraw.pause(100);
+                StdDraw.show();
+            }
         }
+        return total;
     }
     public static int Duplicate(int [][] board){
-        int total=0;
-        shiftDown(board);
-        for (int i = board.length-1; i >0 ;i--) {
+        int total= shiftDown(board);;
+
+       /* for (int i = board.length-1; i >0 ;i--) {
             for (int j = 0; j < board[i].length; j++) {
 
                 if(board[i][j]!=0&&board[i][j]==board[i-1][j]){
@@ -155,7 +175,8 @@ public class Main {
 
                 }
             }
-        }
+        }*/
+
         return total;
     }
     public static int removeLastLine(int[][] board) {
