@@ -38,6 +38,9 @@ public class Main {
             copy(copyShape2,shape1[randomNumber2]);
             Shape shapeNext=new Shape(copyShape2,8,12,randomValues());
             while(true) {
+                if (shape.move(board)) {
+                    break;
+                }
                 boolean check=true;
                 if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)){
                     //shape.moveDown();
@@ -72,9 +75,7 @@ public class Main {
 
                 }
 
-                if (shape.move(board)) {
-                    break;
-                }
+
                 drawLines();
                 score+=removeLastLine(board);
                 DrawBoard(board);
@@ -83,6 +84,8 @@ public class Main {
                 StdDraw.show();
 
             }
+            x = shape.getEnd();
+
 
             System.out.println("First Score:" + score);
             print(board);
@@ -97,13 +100,19 @@ public class Main {
             StdDraw.pause(400);
             DrawBoard(board);
             StdDraw.show();
+            if(!x){
+                break;
+            }
             shapeNext.printReview();
-            x = shape.getEnd();
+
             shape=shapeNext;
-            rew=shape.review();
 
         }while (x);
-
+        DrawBoard(board);
+        DrawShape(shape);
+        StdDraw.show();
+        //DrawShape(shape);
+        StdDraw.show();
     }
     static void print(int [][]board){
         for (int i = 0; i < board.length; i++) {
@@ -143,7 +152,7 @@ public class Main {
                 }
                 else if(board[i][j]!=0&&board[i][j]==board[i+1][j]){
                     board[i+1][j]+=board[i][j];
-                    total+=board[i-1][j];
+                    total+=board[i+1][j];
                     board[i][j]=0;
                     x=true;
                 }
@@ -153,6 +162,7 @@ public class Main {
                 DrawBoard(board);
                 StdDraw.pause(100);
                 StdDraw.show();
+                total+=shiftDown(board);
             }
         }
         return total;
