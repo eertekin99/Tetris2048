@@ -1,14 +1,28 @@
-import java.util.Arrays;
-import java.util.Random;
-
 public class Shape {
+
+    //values of boxes, 2, 4, 8, etc...
     int values [];
+
+    // x and y coordinates of each boxes.
     int coord[][];
+
+    //x coordinates stored in the first index, y coordinate are stored in the second index
+    // y length of the grid
     int boardY;
+
+    // x length of the grid
     int boardX;
+
+    // if it's false, game ends
     private boolean end=true;
 
-
+    /**
+     * constructor method of Tetromino class
+     * @param coord coordinates
+     * @param boardX X length of the grid
+     * @param boardY Y length of the grid
+     * @param values values of boxes
+     */
     public Shape(int[][] coord,int boardX,int boardY,int[] values){
         this.coord=coord;
         this.boardX=boardX;
@@ -17,9 +31,18 @@ public class Shape {
 
     }
 
+    /**
+     * @param board is grid
+     * @return if there is any suitable place to move, it returns false, else it return true
+     *
+     * Function move the tetrominoes downward by 1 in the y axis.
+     * it decreases y coordinates of tetorominoes by 1
+     */
     boolean move(int [][]board){
 
-        if (isSuit(board)){
+        //if it's suitable to move down it move, else it's stopped and grid is updated
+
+        if (canMoveDownward(board)){
             for (int i = 0; i < coord.length; i++) {
                 coord[i][1]+=1;
 
@@ -31,7 +54,13 @@ public class Shape {
             return true;
         }
     }
-    boolean isSuit(int [][] board){
+
+    /**
+     * The function checks if pieces can move downward
+     * @param board
+     * @return
+     */
+    boolean canMoveDownward(int [][] board){
         for(int i = 0; i < coord.length;i++){
             if(coord[i][0]<0|| coord[i][1]<0){
                 continue;
@@ -44,7 +73,15 @@ public class Shape {
         }
         return true;
     }
+
+    /**
+     * This function updates the grid
+     * @param board is grid
+     */
     void done(int [][]board){
+
+        //if the player lose the game it doesn't update
+
         if(!lose()) {
             for (int i = 0; i < coord.length; i++) {
                 board[coord[i][1]][coord[i][0]] = values[i];
@@ -52,21 +89,34 @@ public class Shape {
         }
         else {
 
+            //if lose make end false
             end=false;
         }
 
     }
 
+    /**
+     * it moves the tetromino to the right
+     * @param board is grid
+     */
     void moveRight(int[][] board){
 
+        //checks if it goes out of the grid
 
         if(!greaterThanX(board))
             for (int i = 0; i < coord.length; i++)
-
                 coord[i][0]+=1;
 
     }
+
+    /**
+     * it moves the tetromino to the left
+     * @param board is grid
+     */
     void moveLeft(int[][]board){
+
+        //checks if it goes out of the grid
+
         if(!lessThanX(board)){
             for (int i = 0; i < coord.length; i++) {
                 coord[i][0]-=1;
@@ -74,7 +124,15 @@ public class Shape {
         }
     }
 
+    /**
+     * checks if it suitable to move left
+     * @param board
+     * @return true if it can't move, else false
+     */
     boolean lessThanX(int[][] board){
+
+        // it checks if there is any tetromino on the left or it goes out of the grid
+
         for(int i = 0; i < coord.length;i++){
             if(coord[i][0]-1<0){
                 return true;
@@ -91,7 +149,15 @@ public class Shape {
         return false;
     }
 
+    /**
+     * checks if it suitable to move right
+     * @param board
+     * @return true if it can't move, else false
+     */
     boolean greaterThanX(int[][] board){
+
+        // it checks if there is any tetromino on the right or it goes out of the grid
+
         for(int i = 0; i < coord.length;i++){
             if(coord[i][0]+1>boardX-1 ){
                 return true;
@@ -107,6 +173,10 @@ public class Shape {
         return false;
     }
 
+    /**
+     * it y coordinates goes out of the range of the grid it loses
+     * @return true if it lose , false if it's not
+     */
     boolean lose(){
         for (int i = 0; i < coord.length; i++) {
             if(coord[i][1]<0){
@@ -116,16 +186,18 @@ public class Shape {
         return false;
     }
 
-    void rotateRight(){
-
-    }
-    void rotateLeft(){
-
-    }
-
+    /**
+     * getter function of end
+     * @return end
+     */
     boolean getEnd() {
         return end;
     }
+
+    /**
+     * find minimum y coordinate in the coordinates array
+     * @return the minmum coordinate
+     */
     int minY(){
         int min= 20;
         for (int i = 0; i < coord.length; i++) {
@@ -136,25 +208,11 @@ public class Shape {
         return min;
 
     }
-    int maxY(){
-        int max= 0;
-        for (int i = 0; i < coord.length; i++) {
-            if(coord[i][1]>max){
-                max=coord[i][1];
-            }
-        }
-        return max;
 
-    }
-    int maxX(){
-        int max= 0;
-        for (int i = 0; i < coord.length; i++) {
-            if(coord[i][0]>max){
-                max=coord[i][0];
-            }
-        }
-        return max;
-    }
+    /**
+     * find minimum x coordinate in the coordinates array
+     * @return the minmum coordinate
+     */
     int minX(){
         int min=20;
         for (int i = 0; i < coord.length; i++) {
@@ -164,19 +222,25 @@ public class Shape {
         }
         return min;
     }
-    boolean rotate(int [][] board){
-        //double mid =(double)(minX()+minY())/2.0;
 
+    /**
+     * it rotates the shape if it's suitable to move
+     * @param board
+     * @return if one of the box goes out of grid or duplicate with another tetrominoe
+     * it returns false and quits the function
+     */
+    boolean rotate(int [][] board){
+        // function accepts one of the coordinates as middle points and rotates the array around of it
         int midX=coord[1][0];
         int midY=coord[1][1];
-        System.out.println("mid x = "+midX);
-        System.out.println("mid y ="+midY);
+        //middle points
         int [][] temp = new int[4][2];
-        System.out.println("temps");
+        //temp array for coordinates
         for (int i = 0; i < 4; i++) {
-
+            //moves the coordinate the 0,0 scale and rotate 90 degree clockwise
             temp[i][1] = -(coord[i][0] - midX) + midY;
             temp[i][0] = (coord[i][1] - midY) + midX;
+            //if it can't rotates false returned
             if(temp[i][0]<0 || temp[i][0]>= boardX || temp[i][1]>=boardY){
                 return false;
             }
@@ -190,17 +254,26 @@ public class Shape {
         coord=temp;
         return true;
     }
-    int [][] review(){
+
+    /**
+     * it views the shape
+     * first it finds minimums indexes and decreases every single coordinates by these
+     * and puts the shape in a 2x4 matrix and return it
+     * @return rew, a 2x4 matrix, view of the tetromino
+     */
+    int [][] view(){
         int [][] arr = new int [4][2];
         int min = minY();
         int min2=minX();
+        //min could be negative at the first
         if(min<0)
             min=min*-1;
-        //System.out.println(min2);
+        //decrease coordinates
         for (int i = 0; i < arr.length; i++) {
             arr[i][0]=coord[i][0]-min2;
             arr[i][1]=min+coord[i][1];
         }
+        //and fill the rew array using coordinates
         int [][] rew = new int [4][4];
         for (int i = 0; i <arr.length ; i++) {
             rew[arr[i][1]][arr[i][0]]=values[i];
@@ -208,115 +281,13 @@ public class Shape {
         return rew;
     }
 
-    void printReview(){
-        int [][] arr=review();
-        for (int i = 0; i <arr.length ; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                System.out.print(arr[i][j]+" ");
-            }
-            System.out.println();
-        }
-    }
-
+    /**
+     * getter function of coordinates array
+     * @return coord
+     */
     public int[][] getCoord() {
         return coord;
     }
 
-
-    /*
-    void rotateMatrix(int [][] arr) {
-       int N=4;
-        int val=minX();
-        int val2=minY();
-        int mat[][]= new int [4][4];
-        mat=arr;
-        System.out.println("Review array");
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                System.out.print(arr[i][j]+" ");
-            }
-            System.out.println();
-        }
-        System.out.println("------");
-        /*for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length ; j++) {
-                mat[i][j]=arr[i][j];
-            }
-        }
-        // Consider all squares one by one
-        for (int x = 0; x < N / 2; x++)
-        {
-            // Consider elements in group of 4 in
-            // current square
-            for (int y = x; y < N-x-1; y++)
-            {
-                // store current cell in temp variable
-                int temp = mat[x][y];
-
-                // move values from right to top
-                mat[x][y] = mat[y][N-1-x];
-
-                // move values from bottom to right
-                mat[y][N-1-x] = mat[N-1-x][N-1-y];
-
-                // move values from left to bottom
-                mat[N-1-x][N-1-y] = mat[N-1-y][x];
-
-                // assign temp to left
-                mat[N-1-y][x] = temp;
-            }
-        }
-        System.out.println("Rotated array");
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[i].length; j++) {
-                System.out.print(mat[i][j]+" ");
-            }
-            System.out.println();
-        }
-        System.out.println("-------");
-
-        int counter=0;
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[i].length; j++) {
-                if(mat[i][j]!=0){
-
-                    System.out.println(val+" "+val2);
-                    coord[counter][0]=j+val;
-                    coord[counter][1]=i+val2-1;
-                    values[counter]=mat[i][j];
-
-
-                    counter++;
-                }
-            }
-        }
-        moveShapeTopLeft(mat);
-        arr=mat;
-    }
-    void moveShapeTopLeft(int [][] arr){
-        int x = 4;
-        int y = 4;
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                if(arr[i][j]!=0){
-                  if(j<x)
-                  x=j;
-                  if(i<y)
-                  y=i;
-
-                }
-            }
-        }
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                if(arr[i][j]!=0){
-                    int temp = arr[i][j];
-                    arr[i][j]=0;
-                    arr[i-y][j-x]=temp;
-                }
-            }
-        }
-
-    */
 
 }
