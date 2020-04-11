@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.event.KeyListener;
 import java.util.Random;
 import java.awt.event.KeyEvent;
 
@@ -36,112 +38,171 @@ public class Main {
         boolean x = true;
 
         //playable board part
-        int board [][] = new int[12][8];
+        int board[][] = new int[12][8];
 
         //all shapes we are using
-        int shape1[][][]={{{2,0},{3,0},{3,-1},{4,-1}},
-                {{2,0},{3,0},{4,0},{5,0}},
-                {{2,-1},{3,0},{3,-1},{4,0}},
-                {{2,0},{3,0},{2,-1},{3,-1}},
-                {{2,-1},{3,-1},{3,0},{4,-1}},
-                {{2,0},{3,-1},{2,-1},{4,-1}},
-                {{2,-1},{3,-1},{4,0},{4,-1}},
-                {{0,0},{1,0},{2,0},{3,0}},
-                {{4,0},{5,0},{6,0},{7,0}}
+        int shape1[][][] = {{{2, 0}, {3, 0}, {3, -1}, {4, -1}},
+                {{2, 0}, {3, 0}, {4, 0}, {5, 0}},
+                {{2, -1}, {3, 0}, {3, -1}, {4, 0}},
+                {{2, 0}, {3, 0}, {2, -1}, {3, -1}},
+                {{2, -1}, {3, -1}, {3, 0}, {4, -1}},
+                {{2, 0}, {3, -1}, {2, -1}, {4, -1}},
+                {{2, -1}, {3, -1}, {4, 0}, {4, -1}},
+                {{0, 0}, {1, 0}, {2, 0}, {3, 0}},
+                {{4, 0}, {5, 0}, {6, 0}, {7, 0}}
         };
 
         //creating shape and define numbers
-        int [][] copyShape=new int[4][2];
+        int[][] copyShape = new int[4][2];
         //random
-        Random rnd=new Random();
+        Random rnd = new Random();
         //getting random integer up to 7
-        int randomNumber=rnd.nextInt(7);
-        copy(copyShape,shape1[randomNumber]);
+        int randomNumber = rnd.nextInt(7);
+        copy(copyShape, shape1[randomNumber]);
         //main shape with random numbers
-        Shape shape=new Shape(copyShape,8,12,randomValues());
-        int [][] rew=shape.view();
+        Shape shape = new Shape(copyShape, 8, 12, randomValues());
+        int[][] rew = shape.view();
 
-        do{
-            //creating next shape to print next shape.
-            int [][] copyShape2=new int[4][2];
-            int randomNumber2=rnd.nextInt(7);
-            copy(copyShape2,shape1[randomNumber2]);
-            Shape shapeNext=new Shape(copyShape2,8,12,randomValues());
-
-            while(true) {
-                if (shape.move(board)) { break; }
-                boolean check=true;
-                if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)){
-                    check=false;
-
+        boolean game_on = true;
+        while (game_on) {
+            if (StdDraw.isKeyPressed(KeyEvent.VK_E)) {
+                game_on = false;
+                System.exit(1);
+            }
+            //restart button for ending page
+            if (StdDraw.isKeyPressed(KeyEvent.VK_R)) {
+                score = 0;
+                for (int i = 0; i < board.length; i++) {
+                    for (int j = 0; j < board[0].length; j++) {
+                        board[i][j] = 0;
+                    }
                 }
+                //creating shape and define numbers
+                copyShape = new int[4][2];
+                //random
+                rnd = new Random();
+                //getting random integer up to 7
+                randomNumber = rnd.nextInt(7);
+                copy(copyShape, shape1[randomNumber]);
+                //main shape with random numbers
+                shape = new Shape(copyShape, 8, 12, randomValues());
+                rew = shape.view();
 
-                //time regulations
-                long t= System.currentTimeMillis();
-                long end = t+500;
-
-                //whether game is on or not.
-                while(System.currentTimeMillis() < end && check) {
-
-                    //If press LEFT, shape will move to left.
-                    if (StdDraw.isKeyPressed(KeyEvent.VK_LEFT)){
-                        shape.moveLeft(board);
-                        DrawBoard(board);
-                        DrawShape(shape);
-                        drawNextShape(shapeNext);
-                        StdDraw.show();
-                    }
-
-                    //If press RIGHT, shape will move to right.
-                    else if (StdDraw.isKeyPressed(KeyEvent.VK_RIGHT)){
-                        shape.moveRight(board);
-                        DrawBoard(board);
-                        DrawShape(shape);
-                        drawNextShape(shapeNext);
-                        StdDraw.show();
-                    }
-
-                    //If press UP, shape will rotate.
-                    else if (StdDraw.isKeyPressed(KeyEvent.VK_UP)){
-                        shape.rotate(board);
-                        DrawBoard(board);
-                        DrawShape(shape);
-                        drawNextShape(shapeNext);
-                        StdDraw.show();
-                    }
-
-                    //time regulation
-                    StdDraw.pause(50);
-                }
-
-                //After move/rotate operations, updating game.
-                drawLines();
-                score+=removeLastLine(board);
+                //Draw and Show processes
                 DrawBoard(board);
                 DrawShape(shape);
-                drawNextShape(shapeNext);
                 StdDraw.show();
+
+                x = true;
+            } else {
+                do {
+                    //creating next shape to print next shape.
+                    int[][] copyShape2 = new int[4][2];
+                    int randomNumber2 = rnd.nextInt(7);
+                    copy(copyShape2, shape1[randomNumber2]);
+                    Shape shapeNext = new Shape(copyShape2, 8, 12, randomValues());
+
+                    while (true) {
+                        if (shape.move(board)) {
+                            break;
+                        }
+                        boolean check = true;
+                        if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)) {
+                            check = false;
+
+                        }
+
+                        //time regulations
+                        long t = System.currentTimeMillis();
+                        long end = t + 500;
+
+                        //whether game is on or not.
+                        while (System.currentTimeMillis() < end && check) {
+
+                            //If press LEFT, shape will move to left.
+                            if (StdDraw.isKeyPressed(KeyEvent.VK_LEFT)) {
+                                shape.moveLeft(board);
+                                DrawBoard(board);
+                                DrawShape(shape);
+                                drawNextShape(shapeNext);
+                                StdDraw.show();
+                            }
+
+                            //If press RIGHT, shape will move to right.
+                            else if (StdDraw.isKeyPressed(KeyEvent.VK_RIGHT)) {
+                                shape.moveRight(board);
+                                DrawBoard(board);
+                                DrawShape(shape);
+                                drawNextShape(shapeNext);
+                                StdDraw.show();
+                            }
+
+                            //If press UP, shape will rotate.
+                            else if (StdDraw.isKeyPressed(KeyEvent.VK_UP)) {
+                                shape.rotate(board);
+                                DrawBoard(board);
+                                DrawShape(shape);
+                                drawNextShape(shapeNext);
+                                StdDraw.show();
+                            }
+                            //PRESS 'S' TO STOP THE GAME
+                            else if (StdDraw.isKeyPressed(KeyEvent.VK_S)) {
+                                boolean stop = true;
+                                while(stop) {
+                                    //PRESS 'DOWN' TO GO AGAIN
+                                    if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)) {
+                                        stop = false;
+                                    }
+                                }
+
+                            }
+
+                            //time regulation
+                            StdDraw.pause(50);
+                        }
+
+                        //After move/rotate operations, updating game.
+                        drawLines();
+                        score += removeLastLine(board);
+                        DrawBoard(board);
+                        DrawShape(shape);
+                        drawNextShape(shapeNext);
+                        StdDraw.show();
+                    }
+                    x = shape.getEnd();
+
+                    score += Duplicate(board);
+
+                    StdDraw.pause(100);
+                    DrawBoard(board);
+                    StdDraw.show();
+
+                    if (!x) {
+                        break;
+                    }
+                    shape = shapeNext;
+
+                } while (x);
+
+
+                //end game page.
+                for (int i = board.length-1; i > -1; i--) {
+                    for (int j = board[i].length-1; j > -1; j--) {
+                        StdDraw.setPenColor(StdDraw.WHITE);
+                        StdDraw.filledSquare(j + 0.5, i + 0.5, 0.5);
+                    }
+                }
+                //press r to play again.
+                StdDraw.setPenColor(StdDraw.BLACK);
+                StdDraw.text(4,3.5, "PRESS 'R' TO RESTART.");
+                StdDraw.setPenColor(StdDraw.BLACK);
+                StdDraw.text(4,4.5, "PRESS 'E' TO EXIT.");
+                StdDraw.show();
+
             }
-            x = shape.getEnd();
-
-            score+=Duplicate(board);
-
-            StdDraw.pause(100);
-            DrawBoard(board);
-            StdDraw.show();
-
-            if(!x){
-                break;
-            }
-            shape=shapeNext;
-
-        }while (x);
-
-        //Draw and Show processes
-        DrawBoard(board);
-        DrawShape(shape);
-        StdDraw.show();
+        }
     }
+
 
     /**
      *This function gets current's coordinates and assign to old.
@@ -276,6 +337,12 @@ public class Main {
         //Score and Next
         StdDraw.setPenColor(StdDraw.WHITE);
         StdDraw.text(9,0.5, "SCORE");
+
+        StdDraw.setPenColor(StdDraw.YELLOW);
+        StdDraw.text(9,3.5, "STOP -> 'S'");
+        StdDraw.text(9,4, "GO -> 'DOWN'");
+
+        StdDraw.setPenColor(StdDraw.WHITE);
         StdDraw.text(9, 1.5, Integer.toString(score));
         StdDraw.text(9, 9.5, "NEXT");
     }
