@@ -42,14 +42,14 @@ public class Main {
 
         //all shapes we are using
         int shape1[][][] = {{{2, 0}, {3, 0}, {3, -1}, {4, -1}},
-                {{2, 0}, {3, 0}, {4, 0}, {5, 0}},
+                {{2, -1}, {3, -1}, {4, -1}, {5, -1}},
                 {{2, -1}, {3, 0}, {3, -1}, {4, 0}},
                 {{2, 0}, {3, 0}, {2, -1}, {3, -1}},
                 {{2, -1}, {3, -1}, {3, 0}, {4, -1}},
                 {{2, 0}, {3, -1}, {2, -1}, {4, -1}},
                 {{2, -1}, {3, -1}, {4, 0}, {4, -1}},
                 {{0, 0}, {1, 0}, {2, 0}, {3, 0}},
-                {{4, 0}, {5, 0}, {6, 0}, {7, 0}}
+                {{4, -1}, {5, -1}, {6, -1}, {7, -1}}
         };
 
         //creating shape and define numbers
@@ -199,7 +199,7 @@ public class Main {
 
     /**
      * This function shows end game page.
-     * @param board
+     * @param board : game board
      */
     static void gameEndPage(int [][] board){
 
