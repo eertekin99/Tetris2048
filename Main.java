@@ -145,10 +145,12 @@ public class Main {
                                 drawNextShape(shapeNext);
                                 StdDraw.show();
                             }
+
                             //PRESS 'S' TO STOP THE GAME
                             else if (StdDraw.isKeyPressed(KeyEvent.VK_S)) {
                                 boolean stop = true;
                                 while(stop) {
+
                                     //PRESS 'DOWN' TO GO AGAIN
                                     if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)) {
                                         stop = false;
