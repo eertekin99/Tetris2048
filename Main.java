@@ -156,7 +156,10 @@ public class Main {
                                         stop = false;
                                     }
                                 }
-
+                            }
+                            else if (StdDraw.isKeyPressed(KeyEvent.VK_E)) {
+                                game_on = false;
+                                System.exit(1);
                             }
 
                             //time regulation
@@ -343,6 +346,9 @@ public class Main {
         StdDraw.setPenColor(StdDraw.YELLOW);
         StdDraw.text(9,3.5, "STOP -> 'S'");
         StdDraw.text(9,4, "GO -> 'DOWN'");
+
+        StdDraw.setPenColor(StdDraw.RED);
+        StdDraw.text(9, 4.5, "EXIT -> 'E'");
 
         StdDraw.setPenColor(StdDraw.WHITE);
         StdDraw.text(9, 1.5, Integer.toString(score));
