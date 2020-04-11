@@ -1,5 +1,3 @@
-import javax.swing.*;
-import java.awt.event.KeyListener;
 import java.util.Random;
 import java.awt.event.KeyEvent;
 
@@ -24,16 +22,13 @@ public class Main {
 
         //Canvas size
         StdDraw.setCanvasSize(600, 720);
-
         //enabling double buffering
         StdDraw.enableDoubleBuffering();
-
         //setting x scale
         StdDraw.setXscale(0, 10);
-
         //setting y scale
         StdDraw.setYscale(12, 0);
-
+        //grids
         drawLines();
         boolean x = true;
 
@@ -41,7 +36,7 @@ public class Main {
         int board[][] = new int[12][8];
 
         //all shapes we are using
-        int shape1[][][] = {{{2, 0}, {3, 0}, {3, -1}, {4, -1}},
+        int allShapes[][][] = {{{2, 0}, {3, 0}, {3, -1}, {4, -1}},
                 {{2, -1}, {3, -1}, {4, -1}, {5, -1}},
                 {{2, -1}, {3, 0}, {3, -1}, {4, 0}},
                 {{2, 0}, {3, 0}, {2, -1}, {3, -1}},
@@ -50,56 +45,32 @@ public class Main {
                 {{2, -1}, {3, -1}, {4, 0}, {4, -1}}
         };
 
-        //creating shape and define numbers
-        int[][] copyShape = new int[4][2];
-        //random
-        Random rnd = new Random();
-        //getting random integer up to 7
-        int randomNumber = rnd.nextInt(7);
-        copy(copyShape, shape1[randomNumber]);
-        //main shape with random numbers
-        Shape shape = new Shape(copyShape, 8, 12, randomValues());
-        int[][] rew = shape.view();
+        //first shape created
+        Shape shape = randomShape(allShapes);
 
         boolean game_on = true;
         while (game_on) {
+
+            //exit option
             if (StdDraw.isKeyPressed(KeyEvent.VK_E)) {
                 game_on = false;
                 System.exit(1);
             }
-            //restart button for ending page
-            if (StdDraw.isKeyPressed(KeyEvent.VK_R)) {
-                StdDraw.clear();
-                score = 0;
-                for (int i = 0; i < board.length; i++) {
-                    for (int j = 0; j < board[0].length; j++) {
-                        board[i][j] = 0;
-                    }
-                }
-                //creating shape and define numbers
-                copyShape = new int[4][2];
-                //random
-                rnd = new Random();
-                //getting random integer up to 7
-                randomNumber = rnd.nextInt(7);
-                copy(copyShape, shape1[randomNumber]);
-                //main shape with random numbers
-                shape = new Shape(copyShape, 8, 12, randomValues());
-                rew = shape.view();
 
-                //Draw and Show processes
-                DrawBoard(board);
-                DrawShape(shape);
-                StdDraw.show();
+            //restart option just for end of the game
+            if (StdDraw.isKeyPressed(KeyEvent.VK_R)) {
+                //restart the game
+                restartProtocol(board);
+
+                //first shape created for restarted game
+                shape = randomShape(allShapes);
 
                 x = true;
             } else {
                 do {
-                    //creating next shape to print next shape.
-                    int[][] copyShape2 = new int[4][2];
-                    int randomNumber2 = rnd.nextInt(7);
-                    copy(copyShape2, shape1[randomNumber2]);
-                    Shape shapeNext = new Shape(copyShape2, 8, 12, randomValues());
+
+                    //creation of next shape
+                    Shape shapeNext = randomShape(allShapes);
 
                     while (true) {
                         if (shape.move(board)) {
@@ -121,28 +92,19 @@ public class Main {
                             //If press LEFT, shape will move to left.
                             if (StdDraw.isKeyPressed(KeyEvent.VK_LEFT)) {
                                 shape.moveLeft(board);
-                                DrawBoard(board);
-                                DrawShape(shape);
-                                drawNextShape(shapeNext);
-                                StdDraw.show();
+                                drawAll(board, shape, shapeNext);
                             }
 
                             //If press RIGHT, shape will move to right.
                             else if (StdDraw.isKeyPressed(KeyEvent.VK_RIGHT)) {
                                 shape.moveRight(board);
-                                DrawBoard(board);
-                                DrawShape(shape);
-                                drawNextShape(shapeNext);
-                                StdDraw.show();
+                                drawAll(board, shape, shapeNext);
                             }
 
                             //If press UP, shape will rotate.
                             else if (StdDraw.isKeyPressed(KeyEvent.VK_UP)) {
                                 shape.rotate(board);
-                                DrawBoard(board);
-                                DrawShape(shape);
-                                drawNextShape(shapeNext);
-                                StdDraw.show();
+                                drawAll(board, shape, shapeNext);
                             }
 
                             //PRESS 'S' TO STOP THE GAME
@@ -168,10 +130,7 @@ public class Main {
                         //After move/rotate operations, updating game.
                         drawLines();
                         score += removeLastLine(board);
-                        DrawBoard(board);
-                        DrawShape(shape);
-                        drawNextShape(shapeNext);
-                        StdDraw.show();
+                        drawAll(board, shape, shapeNext);
                     }
                     x = shape.getEnd();
 
@@ -193,6 +152,58 @@ public class Main {
             }
 
         }
+    }
+
+    /**
+     * This function draws all parts of the game to panel.
+     * @param board : game field
+     * @param shape : current shape
+     * @param shapeNext : next shape
+     */
+    static void drawAll(int[][] board, Shape shape, Shape shapeNext){
+        DrawBoard(board);
+        DrawShape(shape);
+        drawNextShape(shapeNext);
+        StdDraw.show();
+    }
+
+    /**
+     * This function clear the board to fresh start
+     * @param board: game field we are on
+     */
+    static void restartProtocol(int[][] board){
+        //clear all drawings
+        StdDraw.clear();
+        //restart score
+        score = 0;
+        //clear all board fields
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                board[i][j] = 0;
+            }
+        }
+    }
+
+    /**
+     * This function creates first shape to start the game
+     * @param shape1: all shapes that can occur
+     * @return: created new shape
+     */
+    static Shape randomShape(int[][][] shape1){
+
+        //creating shape and define numbers
+        int[][] copyShape = new int[4][2];
+
+        //random
+        Random rnd = new Random();
+
+        //getting random integer up to 7
+        int randomNumber = rnd.nextInt(7);
+        copy(copyShape, shape1[randomNumber]);
+
+        //main shape with random numbers
+        Shape shape = new Shape(copyShape, 8, 12, randomValues());
+        return shape;
     }
 
     /**
