@@ -71,6 +71,7 @@ public class Main {
             }
             //restart button for ending page
             if (StdDraw.isKeyPressed(KeyEvent.VK_R)) {
+                StdDraw.clear();
                 score = 0;
                 for (int i = 0; i < board.length; i++) {
                     for (int j = 0; j < board[0].length; j++) {
@@ -189,23 +190,27 @@ public class Main {
 
                 } while (x);
 
-
-                //end game page.
-                for (int i = board.length-1; i > -1; i--) {
-                    for (int j = board[i].length-1; j > -1; j--) {
-                        StdDraw.setPenColor(StdDraw.WHITE);
-                        StdDraw.filledSquare(j + 0.5, i + 0.5, 0.5);
-                    }
-                }
-                //press r to play again.
-                StdDraw.setPenColor(StdDraw.BLACK);
-                StdDraw.text(4,3.5, "PRESS 'R' TO RESTART.");
-                StdDraw.setPenColor(StdDraw.BLACK);
-                StdDraw.text(4,4.5, "PRESS 'E' TO EXIT.");
-                StdDraw.show();
+                gameEndPage(board);
 
             }
+
         }
+    }
+
+    /**
+     * This function shows end game page.
+     * @param board
+     */
+    static void gameEndPage(int [][] board){
+
+        //end game page.
+        StdDraw.setPenColor(StdDraw.DARK_GRAY);
+        StdDraw.filledRectangle(0, 0, board[0].length, board.length);
+
+        //press r to play again.
+        StdDraw.setPenColor(StdDraw.YELLOW);
+        StdDraw.text(4,3.5, "PRESS 'R' TO RESTART.");
+        StdDraw.show();
     }
 
 
