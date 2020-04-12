@@ -116,6 +116,23 @@ public class Main {
                                     if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)) {
                                         stop = false;
                                     }
+                                    //exit option
+                                    if (StdDraw.isKeyPressed(KeyEvent.VK_E)) {
+                                        game_on = false;
+                                        System.exit(1);
+                                    }
+
+                                    //restart option just for end of the game
+                                    if (StdDraw.isKeyPressed(KeyEvent.VK_R)) {
+                                        //restart the game
+                                        restartProtocol(grid);
+
+                                        //first tetromino created for restarted game
+                                        tetromino = randomTetromino(allTetrominos);
+
+                                        x = true;
+                                        stop = false;
+                                    }
                                 }
                             }
                             else if (StdDraw.isKeyPressed(KeyEvent.VK_E)) {
@@ -148,7 +165,7 @@ public class Main {
                     score += Duplicate(grid);
 
                     StdDraw.pause(100);
-                    DrawGrid(grid);
+                    drawGrid(grid);
                     StdDraw.show();
 
                     if (!x) {
@@ -157,8 +174,6 @@ public class Main {
                     tetromino = tetrominoNext;
 
                 } while (x);
-
-
 
             }
             else{
@@ -175,8 +190,8 @@ public class Main {
      * @param tetrominoNext : next tetromino
      */
     static void drawAll(int[][] grid, Tetromino tetromino, Tetromino tetrominoNext){
-        DrawGrid(grid);
-        DrawTetromino(tetromino);
+        drawGrid(grid);
+        drawTetromino(tetromino);
         drawNextTetromino(tetrominoNext);
         StdDraw.show();
     }
@@ -282,7 +297,7 @@ public class Main {
             }
             if (x){
                 i=0;
-                DrawGrid(grid);
+                drawGrid(grid);
                 StdDraw.pause(50);
                 StdDraw.show();
                 total+=shiftDown(grid);
@@ -391,7 +406,7 @@ public class Main {
      * This function draws grid.
      * @param grid : coordinates to draw grid properly
      */
-    static void DrawGrid(int[][] grid){
+    static void drawGrid(int[][] grid){
 
         //Draw basis of the grid with lines.
         drawLines();
@@ -423,7 +438,7 @@ public class Main {
      * This function draws tetromino to the grid.
      * @param tetromino : current tetromino
      */
-    static void DrawTetromino(Tetromino tetromino){
+    static void drawTetromino(Tetromino tetromino){
 
         //Firstly, get tetromino's coordinates.
         int [][] arr = tetromino.getCoord();

@@ -8,10 +8,10 @@ public class Tetromino {
 
     //x coordinates stored in the first index, y coordinate are stored in the second index
     // y length of the grid
-    int boardY;
+    int gridY;
 
     // x length of the grid
-    int boardX;
+    int gridX;
 
     // if it's false, game ends
     private boolean end=true;
@@ -19,30 +19,30 @@ public class Tetromino {
     /**
      * constructor method of Tetromino class
      * @param coord coordinates
-     * @param boardX X length of the grid
-     * @param boardY Y length of the grid
+     * @param gridX X length of the grid
+     * @param gridY Y length of the grid
      * @param values values of boxes
      */
-    public Tetromino(int[][] coord, int boardX, int boardY, int[] values){
+    public Tetromino(int[][] coord, int gridX, int gridY, int[] values){
         this.coord=coord;
-        this.boardX=boardX;
-        this.boardY=boardY;
+        this.gridX=gridX;
+        this.gridY=gridY;
         this.values=values;
 
     }
 
     /**
-     * @param board is grid
+     * @param grid is grid
      * @return if there is any suitable place to move, it returns false, else it return true
      *
      * Function move the tetrominoes downward by 1 in the y axis.
      * it decreases y coordinates of tetorominoes by 1
      */
-    boolean move(int [][]board){
+    boolean move(int [][]grid){
 
         //if it's suitable to move down it move, else it's stopped and grid is updated
 
-        if (canMoveDownward(board)){
+        if (canMoveDownward(grid)){
             for (int i = 0; i < coord.length; i++) {
                 coord[i][1]+=1;
 
@@ -50,25 +50,25 @@ public class Tetromino {
             return false;
         }
         else{
-            done(board);
+            done(grid);
             return true;
         }
     }
 
     /**
      * The function checks if pieces can move downward
-     * @param board
+     * @param grid
      * @return
      */
-    boolean canMoveDownward(int [][] board){
+    boolean canMoveDownward(int [][] grid){
         for(int i = 0; i < coord.length;i++){
             if(coord[i][0]<0|| coord[i][1]<0){
                 continue;
             }
-            if( coord[i][1]+1>board.length-1)
+            if( coord[i][1]+1>grid.length-1)
                 return false;
 
-            if(board[coord[i][1]+1][coord[i][0]]!=0)
+            if(grid[coord[i][1]+1][coord[i][0]]!=0)
                 return false ;
         }
         return true;
@@ -76,15 +76,15 @@ public class Tetromino {
 
     /**
      * This function updates the grid
-     * @param board is grid
+     * @param grid is grid
      */
-    void done(int [][]board){
+    void done(int [][]grid){
 
         //if the player lose the game it doesn't update
 
         if(!lose()) {
             for (int i = 0; i < coord.length; i++) {
-                board[coord[i][1]][coord[i][0]] = values[i];
+                grid[coord[i][1]][coord[i][0]] = values[i];
             }
         }
         else {
@@ -97,13 +97,13 @@ public class Tetromino {
 
     /**
      * it moves the tetromino to the right
-     * @param board is grid
+     * @param grid is grid
      */
-    void moveRight(int[][] board){
+    void moveRight(int[][] grid){
 
         //checks if it goes out of the grid
 
-        if(!greaterThanX(board))
+        if(!greaterThanX(grid))
             for (int i = 0; i < coord.length; i++)
                 coord[i][0]+=1;
 
@@ -111,13 +111,13 @@ public class Tetromino {
 
     /**
      * it moves the tetromino to the left
-     * @param board is grid
+     * @param grid is grid
      */
-    void moveLeft(int[][]board){
+    void moveLeft(int[][]grid){
 
         //checks if it goes out of the grid
 
-        if(!lessThanX(board)){
+        if(!lessThanX(grid)){
             for (int i = 0; i < coord.length; i++) {
                 coord[i][0]-=1;
             }
@@ -126,10 +126,10 @@ public class Tetromino {
 
     /**
      * checks if it suitable to move left
-     * @param board
+     * @param grid
      * @return true if it can't move, else false
      */
-    boolean lessThanX(int[][] board){
+    boolean lessThanX(int[][] grid){
 
         // it checks if there is any tetromino on the left or it goes out of the grid
 
@@ -142,7 +142,7 @@ public class Tetromino {
                 continue;
             }
 
-            if(board[coord[i][1]][coord[i][0]-1]!=0){
+            if(grid[coord[i][1]][coord[i][0]-1]!=0){
                 return true;
             }
         }
@@ -151,22 +151,22 @@ public class Tetromino {
 
     /**
      * checks if it suitable to move right
-     * @param board
+     * @param grid
      * @return true if it can't move, else false
      */
-    boolean greaterThanX(int[][] board){
+    boolean greaterThanX(int[][] grid){
 
         // it checks if there is any tetromino on the right or it goes out of the grid
 
         for(int i = 0; i < coord.length;i++){
-            if(coord[i][0]+1>boardX-1 ){
+            if(coord[i][0]+1>gridX-1 ){
                 return true;
             }
 
             if(coord[i][1]<0) {
                 continue;
             }
-            if(board[coord[i][1]][coord[i][0]+1]!=0 ){
+            if(grid[coord[i][1]][coord[i][0]+1]!=0 ){
                 return true;
             }
         }
@@ -225,11 +225,11 @@ public class Tetromino {
 
     /**
      * it rotates the tetromino if it's suitable to move
-     * @param board
+     * @param grid
      * @return if one of the box goes out of grid or duplicate with another tetrominoe
      * it returns false and quits the function
      */
-    boolean rotate(int [][] board){
+    boolean rotate(int [][] grid){
         // function accepts one of the coordinates as middle points and rotates the array around of it
         int midX=coord[1][0];
         int midY=coord[1][1];
@@ -241,12 +241,12 @@ public class Tetromino {
             temp[i][1] = -(coord[i][0] - midX) + midY;
             temp[i][0] = (coord[i][1] - midY) + midX;
             //if it can't rotates false returned
-            if(temp[i][0]<0 || temp[i][0]>= boardX || temp[i][1]>=boardY){
+            if(temp[i][0]<0 || temp[i][0]>= gridX || temp[i][1]>=gridY){
                 return false;
             }
             if (temp[i][1]<0)
                 continue;
-            if(board[temp[i][1]][temp[i][0]]!=0 )
+            if(grid[temp[i][1]][temp[i][0]]!=0 )
                 return false;
 
 
