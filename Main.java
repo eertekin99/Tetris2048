@@ -66,7 +66,7 @@ public class Main {
                 shape = randomShape(allShapes);
 
                 x = true;
-            } else {
+            } else if(x) {
                 do {
 
                     //creation of next shape
@@ -147,8 +147,11 @@ public class Main {
 
                 } while (x);
 
-                gameEndPage(board);
 
+
+            }
+            else{
+                gameEndPage(board);
             }
 
         }
