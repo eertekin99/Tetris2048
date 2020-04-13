@@ -59,7 +59,11 @@ public class Main {
             if (StdDraw.isKeyPressed(KeyEvent.VK_ENTER)) {
                 game_on = true;
                 StdDraw.clear();
-
+            }
+            //exit option
+            if (StdDraw.isKeyPressed(KeyEvent.VK_E)) {
+                game_on = false;
+                System.exit(1);
             }
         }
 
