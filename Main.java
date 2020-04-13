@@ -48,7 +48,21 @@ public class Main {
         //first tetromino created
         Tetromino tetromino = randomTetromino(allTetrominos);
 
-        boolean game_on = true;
+
+
+        boolean game_on = false;
+
+
+        //Begin page
+        while(game_on == false) {
+            gameBeginPage(grid);
+            if (StdDraw.isKeyPressed(KeyEvent.VK_ENTER)) {
+                game_on = true;
+                StdDraw.clear();
+
+            }
+        }
+
         while (game_on) {
 
             //exit option
@@ -249,6 +263,24 @@ public class Main {
         StdDraw.setPenColor(StdDraw.YELLOW);
         StdDraw.text(4,3.5, "PRESS 'R' TO RESTART.");
         StdDraw.text(4,3, "SCORE : "+score);
+        StdDraw.show();
+    }
+
+    static void gameBeginPage(int [][] grid){
+
+        //main menu page.
+        StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
+        StdDraw.filledRectangle(0, 0, grid[0].length, grid.length);
+
+
+        StdDraw.setPenColor(StdDraw.CYAN);
+        StdDraw.text(4, 2, "TETRIS-2048");
+        StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+        StdDraw.text(4,6.5, "PRESS 'ENTER' TO START.");
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.text(4,8, "Burak Bahir Günden");
+        StdDraw.text(4,8.5, "Efe Ertekin");
+        StdDraw.text(4,9, "Yasin Yılmaz");
         StdDraw.show();
     }
 
