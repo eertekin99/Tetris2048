@@ -13,4 +13,4 @@ Left Arrow --> Move to left\
 E --> Exit\
 R --> Restart\
 Enter --> to start the game while on main menu\
-S//Down Arrow --> Pause//Move on\
+S//Down Arrow --> Pause//Move on
